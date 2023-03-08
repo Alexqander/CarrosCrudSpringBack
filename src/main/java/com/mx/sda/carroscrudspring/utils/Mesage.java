@@ -10,11 +10,15 @@ public class Mesage {
 
     public Mesage() {
     }
-
-    public Mesage(String message, boolean error, Object data, List<Object> listData) {
+    public Mesage(String message, boolean error, Object data) {
         this.message = message;
         this.error = error;
         this.data = data;
+    }
+
+    public Mesage(String message, boolean error, List<Object> listData) {
+        this.message = message;
+        this.error = error;
         this.listData = listData;
     }
 

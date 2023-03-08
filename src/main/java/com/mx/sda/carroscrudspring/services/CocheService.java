@@ -2,8 +2,8 @@ package com.mx.sda.carroscrudspring.services;
 
 import com.mx.sda.carroscrudspring.model.Coche;
 import com.mx.sda.carroscrudspring.model.CocheRepository;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.mx.sda.carroscrudspring.utils.Mesage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,15 +19,15 @@ public class CocheService {
     @Autowired
     CocheRepository cocheRepository;
     @Transactional
-    public ResponseEntity<Message> findAll(){
-        return new ResponseEntity<>(new Message("OK",false,cocheRepository, HttpStatus.OK);
+    public ResponseEntity<Mesage> findAll(){
+        return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.findAllByStatus_id(1)), HttpStatus.OK);
     }
     @Transactional
-    public ResponseEntity<Message> findCoche(long id){
-        return new ResponseEntity<>(new Message("OK",false,cocheRepository.findById(id)), HttpStatus.OK);
+    public ResponseEntity<Mesage> findCoche(long id){
+        return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.findById(id)), HttpStatus.OK);
     }
     @Transactional
-    public ResponseEntity<Message> updateCoche(Coche coche){
+    public ResponseEntity<Mesage> updateCoche(Coche coche){
         Coche existCoche =cocheRepository.findById(coche.getId());
         if(existCoche!=null){
             if (!coche.getMarca().isEmpty())
@@ -42,18 +42,22 @@ public class CocheService {
                 existCoche.setColor(coche.getColor());
             if (coche.getAnio() == 0)
                 existCoche.setAnio(coche.getAnio());
-            return new ResponseEntity<>(new Message("OK",false,cocheRepository.save(existCoche)), HttpStatus.OK);
+            return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.save(existCoche)), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new Message("error",true,null),
+        return new ResponseEntity<>(new Mesage("error",true,null),
                 HttpStatus.BAD_REQUEST);
     }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<Mesage>save(Coche coche){
 
+        Optional<Coche> existsCoche = Optional.ofNullable(cocheRepository.findById(coche.getId()));
+        if (existsCoche.isPresent()){
+            return new ResponseEntity<>(new Mesage("Ya existe un coche con ese ID",true,null),
+                    HttpStatus.BAD_REQUEST);
+        }
 
-
-
-
-
-
-
+        return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.saveAndFlush(coche)),
+                HttpStatus.OK);
+    }
 
 }
