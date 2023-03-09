@@ -1,7 +1,11 @@
 package com.mx.sda.carroscrudspring.services;
 
+import com.mx.sda.carroscrudspring.CarrosCrudSpringApplication;
 import com.mx.sda.carroscrudspring.model.Coche;
 import com.mx.sda.carroscrudspring.model.CocheRepository;
+import com.mx.sda.carroscrudspring.utils.LoggerClass;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.mx.sda.carroscrudspring.utils.Mesage;
 import org.springframework.http.HttpStatus;
@@ -10,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,9 +21,18 @@ import java.util.Optional;
 public class CocheService {
     @Autowired
     CocheRepository cocheRepository;
+
+
+
+
     @Transactional
     public ResponseEntity<Mesage> findAll(){
-        return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.findAllByStatus_id(1)), HttpStatus.OK);
+
+
+        LoggerClass log = new LoggerClass(cocheRepository.findAll());
+        log.info();
+
+        return new ResponseEntity<>(new Mesage("ok",false,cocheRepository.findAll()), HttpStatus.OK);
     }
     @Transactional
     public ResponseEntity<Mesage> findCoche(long id){
@@ -42,7 +54,11 @@ public class CocheService {
                 existCoche.setColor(coche.getColor());
             if (coche.getAnio() == 0)
                 existCoche.setAnio(coche.getAnio());
-            return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.save(existCoche)), HttpStatus.OK);
+
+
+            LoggerClass log = new LoggerClass(cocheRepository.save(existCoche));
+            log.warn();
+            return new ResponseEntity<>(new Mesage("ok",false,cocheRepository.save(existCoche)), HttpStatus.OK);
         }
         return new ResponseEntity<>(new Mesage("error",true,null),
                 HttpStatus.BAD_REQUEST);
@@ -56,7 +72,9 @@ public class CocheService {
                     HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(new Mesage("OK",false,cocheRepository.saveAndFlush(coche)),
+        LoggerClass log = new LoggerClass(cocheRepository.saveAndFlush(coche));
+        log.warn();
+        return new ResponseEntity<>(new Mesage("ok",false,cocheRepository.saveAndFlush(coche)),
                 HttpStatus.OK);
     }
 
