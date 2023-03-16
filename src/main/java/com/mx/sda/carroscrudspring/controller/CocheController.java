@@ -5,7 +5,6 @@ import com.mx.sda.carroscrudspring.model.CocheDto;
 import com.mx.sda.carroscrudspring.services.CocheService;
 import com.mx.sda.carroscrudspring.utils.Mesage;
 import jakarta.validation.Valid;
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ public class CocheController {
         return cocheService.findCoche(id);
     }
     @PostMapping("/")
-    public ResponseEntity<Mesage>createCoche(@RequestBody CocheDto cocheDto ){
+    public ResponseEntity<Mesage>createCoche(@Valid @RequestBody CocheDto cocheDto ){
         Coche coche = new Coche(
                 cocheDto.getId(),
                 cocheDto.getMarca(),
@@ -34,8 +33,8 @@ public class CocheController {
                 cocheDto.getAnio());
         return cocheService.save(coche);
     }
-    @PutMapping("/update")
-    public ResponseEntity<Mesage> modificar(@RequestBody CocheDto cocheDto){
+    @PutMapping("/{id}")
+    public ResponseEntity<Mesage> updateCoche( @PathVariable("id") long id ,  @Valid @RequestBody CocheDto cocheDto){
         Coche coche = new Coche(
                 cocheDto.getId(),
                 cocheDto.getMarca(),
@@ -44,10 +43,12 @@ public class CocheController {
                 cocheDto.getPrecio(),
                 cocheDto.getColor(),
                 cocheDto.getAnio());
-        return cocheService.updateCoche(coche);
+        return cocheService.updateCoche(id,coche);
     }
-
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Mesage>deleteById(@PathVariable("id") long id){
+        return cocheService.deleteCoche(id);
+    }
 
 
 

@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class CocheDto {
@@ -12,16 +13,17 @@ public class CocheDto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotBlank(message = "La marca es obligatoria")
+
     private String marca;
     @NotBlank(message = "El modelo es obligatoria")
     private String modelo;
-    @NotBlank(message = "El estado es obligatorio")
+    @NotNull(message = "El estado es obligatorio")
     private Boolean activo;
-    @NotBlank(message = "El precio es obligatoria")
+    @NotNull(message = "El precio es obligatoria")
     private Integer precio;
     @NotBlank(message = "El color es obligatoria")
     private String color;
-    @NotBlank(message = "El año es obligatoria")
+    @NotNull(message = "El año es obligatoria")
     private Integer anio;
 
 

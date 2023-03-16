@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/Carros
+    url: jdbc:mysql://localhost:33060/carroSpring
     username: root
     password: 995410
   jpa:

@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface CocheRepository extends JpaRepository<Coche,Long> {
     Coche findById(long id);
-    List<Coche> findAllByStatus_id(long id);
+    List<Coche> findAllByActivo(long id);
 
 
 }
